@@ -1,0 +1,30 @@
+{
+  "name": "viewmystartup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev -w fe\" \"npm run dev -w be\"",
+    "build": "npm run build -w fe && npm run build -w be"
+  },
+  "workspaces": [
+    "fe",
+    "be"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Inherent-q/Codiet-FS12-Part2-Team1-View-My-Startup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Inherent-q/Codiet-FS12-Part2-Team1-View-My-Startup/issues"
+  },
+  "homepage": "https://github.com/Inherent-q/Codiet-FS12-Part2-Team1-View-My-Startup#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -3,11 +3,44 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+// Prisma 클라이언트 설정
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
+// 데이터베이스 연결 설정
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 모델 정의 (테이블)
+
+
+model Corp {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String
+  category     String
+  vmsInvest    Int
+  accInvest    Int
+  revenue      Int
+  hire         Int
+  chosenCount  Int
+  compareCount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  investors    Investor[]
+}
+
+model Investor {
+  id       Int    @id @default(autoincrement())
+  name     String
+  amount   Int
+  password String
+  comment  String
+  corpId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  corp     Corp   @relation(fields: [corpId], references: [id])
 }

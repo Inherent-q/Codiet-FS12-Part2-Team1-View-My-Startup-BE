@@ -4,6 +4,9 @@ import prisma from "./client.js";
 import cors from "cors";
 
 dotenv.config();
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.json({ message: "Prisma API Server" });
+  res.json(corps);
 });
 
 app.listen(PORT, () => {

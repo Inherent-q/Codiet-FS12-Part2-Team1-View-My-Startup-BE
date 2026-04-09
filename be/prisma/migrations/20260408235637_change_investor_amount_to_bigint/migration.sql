@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Investor" ALTER COLUMN "amount" SET DATA TYPE BIGINT;

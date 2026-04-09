@@ -22,25 +22,42 @@ model Corp {
   name         String
   description  String
   category     String
-  vmsInvest    Int
-  accInvest    Int
-  revenue      Int
+  accInvest    BigInt
+  revenue      BigInt
   hire         Int
-  chosenCount  Int
-  compareCount Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  investors    Investor[]
+  investors             Investor[]
+  comparisonselections  Comparisonselection[]
+  myselections          Myselection[]
 }
 
 model Investor {
   id       Int    @id @default(autoincrement())
   name     String
-  amount   Int
+  amount   BigInt
   password String
   comment  String
   corpId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   corp     Corp   @relation(fields: [corpId], references: [id])
+}
+
+model Comparisonselection {
+  id Int @id @default(autoincrement())
+  userSessionId String 
+  corpId        Int
+  corp          Corp   @relation(fields: [corpId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Myselection {
+ id Int @id @default(autoincrement())
+  userSessionId String 
+  corpId        Int
+  corp          Corp   @relation(fields: [corpId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,16 +1,46 @@
-# React + Vite
+# View My Startup - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 환경변수 설정
 
-Currently, two official plugins are available:
+`.env.example`을 참고해 `.env` 파일을 생성해주세요.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+cp .env.example .env
+```
 
-## React Compiler
+| 변수 | 설명 | 기본값 |
+|------|------|--------|
+| `VITE_API_URL` | 백엔드 API 주소 | `http://localhost:3000` |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 폴더 구조
 
-## Expanding the ESLint configuration
+```
+src/
+├── components/
+│   ├── Header/        # 공통 네비게이션 헤더
+│   └── Pagination/    # 공통 페이지네이션
+├── pages/
+│   └── ComparisonStatus/  # 비교 현황 페이지
+├── data/
+│   └── mockData.js    # 목 데이터 (API 연동 전 임시)
+├── App.jsx
+├── main.jsx
+└── index.css
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 라우트
+
+| 경로 | 페이지 |
+|------|--------|
+| `/` | 기업 전체 리스트 |
+| `/select` | 나의 기업 비교 선택 |
+| `/compare` | 비교 현황 |
+| `/investment` | 투자 현황 |
+| `/results` | 비교 결과 |
+| `/detail` | 기업 상세 |
+
+## 개발 서버 실행
+
+```bash
+npm run dev
+```

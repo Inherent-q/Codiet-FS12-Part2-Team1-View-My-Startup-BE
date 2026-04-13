@@ -131,17 +131,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  background-color: #ffffff;
+  /* 이니셜 텍스트 스타일 */
+  color: #333333;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.company-logo img.logo-contain {
+  object-fit: contain;
+  padding: 4px;
+}
+
+.company-logo img.logo-full {
+  object-fit: contain;
+  padding: 1px;
+}
+
+.company-logo img.logo-max {
+  object-fit: contain;
+  padding: 0;
 }
 
 .company-name {
+  color: #FFF;
+  font-family: 'Pretendard', sans-serif;
   font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -176,4 +206,107 @@
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
+}
+
+/* iPad mini (744px) */
+@media (max-width: 768px) {
+  .comparison-status {
+    padding: 24px 24px 0;
+  }
+
+  .cs-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .cs-table {
+    min-width: 680px;
+  }
+
+  .cs-table th {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .cs-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .col-rank    { width: 60px; }
+  .col-name    { width: 150px; }
+  .col-category{ width: 90px; }
+  .col-my      { width: 130px; }
+  .col-compare { width: 130px; }
+
+  .sort-select {
+    font-size: 13px;
+    min-width: 180px;
+    padding: 8px 30px 8px 12px;
+  }
+}
+
+/* Mobile (375px) */
+@media (max-width: 430px) {
+  .comparison-status {
+    padding: 16px 16px 0;
+  }
+
+  .cs-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .cs-title {
+    font-size: 16px;
+  }
+
+  .sort-select {
+    width: 100%;
+    min-width: unset;
+    font-size: 13px;
+  }
+
+  .cs-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .cs-table {
+    min-width: 600px;
+  }
+
+  .cs-table th {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .cs-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .col-rank    { width: 50px; }
+  .col-name    { width: 130px; }
+  .col-category{ width: 80px; }
+  .col-my      { width: 110px; }
+  .col-compare { width: 110px; }
+
+  .company-logo {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .company-name {
+    font-size: 12px;
+  }
+
+  .rank {
+    font-size: 12px;
+  }
+
+  .count {
+    font-size: 12px;
+  }
 }

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '../../components/Pagination';
+import CompanyCard from '../../components/CompanyCard';
 import { MOCK_COMPANIES } from '../../data/mockData';
 import './ComparisonStatus.css';
 
@@ -80,34 +81,7 @@ function ComparisonStatus() {
             {currentItems.map((company, index) => {
               const globalRank = (currentPage - 1) * ITEMS_PER_PAGE + index + 1;
               return (
-                <tr key={company.id} className="cs-row">
-                  <td className="col-rank">
-                    <span className="rank">{globalRank}위</span>
-                  </td>
-                  <td className="col-name">
-                    <div className="company-info">
-                      <div
-                        className="company-logo"
-                        style={{ backgroundColor: company.logoColor }}
-                      >
-                        {company.logoInitial}
-                      </div>
-                      <span className="company-name">{company.name}</span>
-                    </div>
-                  </td>
-                  <td className="col-desc">
-                    <p className="company-desc">{company.description}</p>
-                  </td>
-                  <td className="col-category">
-                    <span className="category-badge">{company.category}</span>
-                  </td>
-                  <td className="col-my">
-                    <span className="count">{company.myCount.toLocaleString()}</span>
-                  </td>
-                  <td className="col-compare">
-                    <span className="count">{company.compareCount.toLocaleString()}</span>
-                  </td>
-                </tr>
+                <CompanyCard key={company.id} company={company} rank={globalRank} />
               );
             })}
           </tbody>

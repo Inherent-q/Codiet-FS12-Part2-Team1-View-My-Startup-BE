@@ -14,7 +14,8 @@
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 32px;
 }
 
 .logo {
@@ -60,4 +61,43 @@
 .nav-link.active {
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* iPad mini (744px) */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0 24px;
+    gap: 20px;
+  }
+
+  .logo-main {
+    font-size: 15px;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile (375px) */
+@media (max-width: 430px) {
+  .header-inner {
+    padding: 0 16px;
+    gap: 12px;
+    height: 56px;
+  }
+
+  .logo-view {
+    font-size: 10px;
+  }
+
+  .logo-main {
+    font-size: 13px;
+  }
+
+  .nav-link {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
 }

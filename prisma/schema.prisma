@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+// Prisma 클라이언트 설정
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 데이터베이스 연결 설정
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 모델 정의 (테이블)
+
+
+model Corp {
+  id           Int        @id @default(autoincrement())
+  name         String
+  img          String?
+  description  String
+  category     String
+  accInvest    BigInt
+  revenue      BigInt
+  hire         Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  investors             Investor[]
+  comparisonselections  Comparisonselection[]
+  myselections          Myselection[]
+}
+
+model Investor {
+  id       Int    @id @default(autoincrement())
+  name     String
+  amount   BigInt
+  password String
+  comment  String
+  corpId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  corp     Corp   @relation(fields: [corpId], references: [id])
+}
+
+model Comparisonselection {
+  id Int @id @default(autoincrement())
+  userSessionId String 
+  corpId        Int
+  corp          Corp   @relation(fields: [corpId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Myselection {
+ id Int @id @default(autoincrement())
+  userSessionId String 
+  corpId        Int
+  corp          Corp   @relation(fields: [corpId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

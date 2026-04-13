@@ -1,63 +1,57 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
-// Prisma 클라이언트 설정
 generator client {
   provider = "prisma-client-js"
 }
 
-// 데이터베이스 연결 설정
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// 모델 정의 (테이블)
-
-
 model Corp {
-  id           Int        @id @default(autoincrement())
-  name         String
-  description  String
-  category     String
-  accInvest    BigInt
-  revenue      BigInt
-  hire         Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  investors             Investor[]
-  comparisonselections  Comparisonselection[]
-  myselections          Myselection[]
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  description          String
+  category             String
+  accInvest            BigInt
+  revenue              BigInt
+  hire                 Int
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  img                  String?
+  comparisonselections Comparisonselection[]
+  investors            Investor[]
+  myselections         Myselection[]
 }
 
 model Investor {
-  id       Int    @id @default(autoincrement())
-  name     String
-  amount   BigInt
-  password String
-  comment  String
-  corpId   Int
+  id        Int      @id @default(autoincrement())
+  name      String
+  amount    BigInt
+  password  String
+  comment   String
+  corpId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  corp     Corp   @relation(fields: [corpId], references: [id])
+  corp      Corp     @relation(fields: [corpId], references: [id])
 }
 
 model Comparisonselection {
-  id Int @id @default(autoincrement())
-  userSessionId String 
+  id            Int      @id @default(autoincrement())
+  userSessionId String
   corpId        Int
   corp          Corp   @relation(fields: [corpId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userSessionId, corpId])  // (종찬 추가) 같은 사용자가 같은 기업 중복 추가 방지
+  @@index([userSessionId])           // (종찬 추가) 조회 성능 최적화
 }
 
 model Myselection {
  id Int @id @default(autoincrement())
-  userSessionId String 
+  userSessionId String  @unique  // (종찬 추가) 사용자당 1개의 나의 기업만 선택 @unique
   corpId        Int
-  corp          Corp   @relation(fields: [corpId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  corp          Corp     @relation(fields: [corpId], references: [id])
 }

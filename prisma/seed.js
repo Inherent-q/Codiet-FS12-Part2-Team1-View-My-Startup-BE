@@ -15,7 +15,6 @@ async function main() {
   for (let i = 0; i < 200; i++) {
     corps.push({
       name: faker.company.name(),
-      img: `https://picsum.photos/seed/${i}/64/64`,
       description: faker.company.catchPhrase(),
       category: faker.helpers.arrayElement([
         "핀테크",

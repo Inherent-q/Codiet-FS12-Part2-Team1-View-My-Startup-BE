@@ -74,4 +74,27 @@ router.delete("/investors/:investorId", async (req, res) => {
   }
 });
 
+// 투자자 수정
+router.patch("/investors/:investorId", async (req, res) => {
+  const { investorId } = req.params;
+  const { name, amount, comment, password } = req.body;
+  try {
+    const investor = await prisma.investor.findUnique({
+      where: { id: Number(investorId) },
+    });
+    if (!investor)
+      return res.status(404).json({ message: "투자자를 찾을 수 없습니다." });
+
+    if (investor.password !== password)
+      return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
+
+    const updated = await prisma.investor.update({
+      where: { id: Number(investorId) },
+      data: { name, amount, comment },
+    });
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 export default router;

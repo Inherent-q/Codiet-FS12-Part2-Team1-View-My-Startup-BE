@@ -1,30 +1,79 @@
 import express from "express";
 import prisma from "../client.js";
+import { buildPaginationResponse } from "../utils/pagination.js";
 
 const router = express.Router();
 
 router.get("/corporations/:id", async (req, res) => {
-  const { id } = req.params;
+  const numericId = Number(req.params.id);
+  if (!Number.isInteger(numericId) || numericId <= 0) {
+    return res.status(400).json({ message: "유효하지 않은 기업 ID입니다." });
+  }
+
   try {
-    const corporation = await prisma.corp.findUnique({
-      where: { id: Number(id) },
-    });
-    if (!corporation)
-      return res.status(404).json({ message: "기업을 찾을 수 없습니다." });
-    res.json(corporation);
+    const [corp, aggregate, allCorps] = await prisma.$transaction([
+      prisma.corp.findUnique({ where: { id: numericId } }),
+      prisma.investor.aggregate({
+        where: { corpId: numericId },
+        _sum: { amount: true },
+        _count: { id: true },
+      }),
+      prisma.corp.findMany({
+        select: {
+          id: true,
+          accInvest: true,
+          investors: { select: { amount: true } },
+        },
+      }),
+    ]);
+
+    if (!corp) return res.status(404).json({ message: "기업을 찾을 수 없습니다." });
+
+    const vms = Number(aggregate._sum.amount ?? 0);
+    const investorCount = aggregate._count.id;
+    const accInvestRank =
+      allCorps.filter((c) => Number(c.accInvest) > Number(corp.accInvest)).length + 1;
+    const vmsRank =
+      allCorps.filter(
+        (c) => c.investors.reduce((acc, i) => acc + Number(i.amount), 0) > vms
+      ).length + 1;
+
+    res.json({ ...corp, vms, investorCount, accInvestRank, vmsRank });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 router.get("/corporations/:id/investors", async (req, res) => {
-  const { id } = req.params;
+  const numericId = Number(req.params.id);
+  if (!Number.isInteger(numericId) || numericId <= 0) {
+    return res.status(400).json({ message: "유효하지 않은 기업 ID입니다." });
+  }
+
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 5));
+
   try {
-    const investors = await prisma.investor.findMany({
-      where: { corpId: Number(id) },
-      orderBy: { amount: "desc" },
-    });
-    res.status(200).json(investors);
+    const [investors, totalCount] = await prisma.$transaction([
+      prisma.investor.findMany({
+        where: { corpId: numericId },
+        orderBy: { amount: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+        select: {
+          id: true,
+          name: true,
+          amount: true,
+          comment: true,
+          corpId: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      prisma.investor.count({ where: { corpId: numericId } }),
+    ]);
+
+    res.status(200).json(buildPaginationResponse(investors, totalCount, req.query));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

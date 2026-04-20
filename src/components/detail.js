@@ -37,7 +37,7 @@ router.post("/corporations/:id/investors", async (req, res) => {
     const newInvestor = await prisma.investor.create({
       data: {
         name,
-        amount,
+        amount: Number(amount),
         password,
         comment,
         corpId: Number(id),

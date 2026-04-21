@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/corporations", corpsRouter);
+app.use("/api", corpsRouter);
 
 //새로운 라우터 추가 (주연)
 app.use("/api", investmentRoutes);

@@ -28,7 +28,7 @@ export function getPrismaQueryParams(query) {
     skip: (page - 1) * limit,
     take: limit,
     where: search
-      ? { name: { contains: search, mode: "insensitive" } }
+      ? { name: { contains: search, mode: "insensitive" } } // 대소문자 무시
       : undefined,
     orderBy: { [sortBy]: sortOrder },
   };

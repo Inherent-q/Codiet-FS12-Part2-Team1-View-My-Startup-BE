@@ -8,13 +8,13 @@ import {
 const router = Router();
 
 // GET /corps
-router.get("/", async (req, res) => {
+router.get("/corporations", async (req, res) => {
   try {
     const params = getPrismaQueryParams(req.query);
 
     const [data, totalCount] = await prisma.$transaction([
       prisma.corp.findMany(params), // 현재 페이지 데이터
-      prisma.corp.count({ where: params.where }),
+      prisma.corp.count({ where: params.where }), // 전체 데이터 개수 
     ]);
 
     res.status(200).json(buildPaginationResponse(data, totalCount, req.query));

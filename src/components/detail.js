@@ -37,7 +37,7 @@ router.post("/corporations/:id/investors", async (req, res) => {
     const newInvestor = await prisma.investor.create({
       data: {
         name,
-        amount,
+        amount: Number(amount),
         password,
         comment,
         corpId: Number(id),
@@ -64,12 +64,30 @@ router.get("/investors/:investorId", async (req, res) => {
 
 router.delete("/investors/:investorId", async (req, res) => {
   const { investorId } = req.params;
+  const { password } = req.body;
+
   try {
+    const investor = await prisma.investor.findUnique({
+      where: { id: Number(investorId) },
+    });
+
+    if (!investor) {
+      return res.status(404).json({ message: "투자자를 찾을 수 없습니다." });
+    }
+
+    // 서버에서 비밀번호 비교
+    if (investor.password !== password) {
+      return res
+        .status(401)
+        .json({ message: "잘못된 비밀번호로 삭제에 실패하셨습니다." });
+    }
+
     await prisma.investor.delete({
       where: { id: Number(investorId) },
     });
     res.status(204).json("삭제 성공하였습니다.");
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });

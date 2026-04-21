@@ -5,15 +5,16 @@ const router = express.Router();
 
 export const postInvestor = async (req, res) => {
   try {
-    console.log(req.body);
     const { name, amount, password, comment, corpId, updatedAt } = req.body;
     const addInvestors = await prisma.investor.create({
-      name,
-      amount,
-      password,
-      comment,
-      corpId,
-      updatedAt,
+      data: {
+        name,
+        amount,
+        password,
+        comment,
+        corpId,
+        updatedAt,
+      },
     });
     res.status(201).json(addInvestors);
   } catch (error) {

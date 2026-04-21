@@ -3,20 +3,6 @@ import prisma from "../client.js";
 
 const router = express.Router();
 
-// 기업을 클릭하면 상세페이지로 넘어가게 할 것인지... 고민해보기!!
-
-// export const getAllCorps = async (req, res) => {
-//   try {
-//     const corps = await prisma.corp.findMany();
-//     res.status(200).json({
-//       success: true,
-//       data: corps,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };
-
 export const getSortedCorps = async (req, res) => {
   try {
     const sort = req.query.sort;
@@ -90,7 +76,6 @@ export const getSortedCorps = async (req, res) => {
   }
 };
 
-// router.get("/corporations/:id", getAllCorps);
 router.get("/corporations/list", getSortedCorps);
 
 export default router;
